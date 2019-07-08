@@ -13,11 +13,9 @@ import {
   Icon,
   Text
 } from 'native-base';
-// import { View, Text, StatusBar, ScrollView } from 'react-native';
-import axios from 'axios';
 import Router from './Routes/Router';
-import { FooterComponent } from './components/FooterComponent';
-// import { Footer, FooterTab, Button, Icon } from 'native-base';
+
+console.disableYellowBox = true;
 
 class App extends Component {
   render() {
@@ -34,6 +32,7 @@ class App extends Component {
           </Body>
           <Right />
         </Header>
+
         <Router />
 
         <Footer>

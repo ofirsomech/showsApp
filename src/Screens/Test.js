@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import {
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity
+} from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import {
   Container,
   Header,
@@ -33,7 +38,7 @@ class Test extends Component {
       .then(response => this.setState({ shows: response.data }));
   }
 
-  renderShows() {
+  renderShows = () => {
     return this.state.shows.map(show => (
       <View>
         <Card style={{ elevation: 3 }}>
@@ -47,10 +52,17 @@ class Test extends Component {
             </Left>
           </CardItem>
           <CardItem cardBody>
-            <Image
-              style={{ height: 300, flex: 1 }}
-              source={{ uri: show.image.medium }}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => {
+                // debugger;
+                Actions.show_details({ show: show });
+              }}
+            >
+              <Image
+                style={{ height: 300, flex: 1 }}
+                source={{ uri: show.image.medium }}
+              />
+            </TouchableWithoutFeedback>
           </CardItem>
           <CardItem>
             <Icon name="heart" style={{ color: '#ED4A6A' }} />
@@ -59,9 +71,10 @@ class Test extends Component {
         </Card>
       </View>
     ));
-  }
+  };
 
   render() {
+    // debugger;
     return (
       <KeyboardAwareScrollView>
         <View>{this.renderShows()}</View>
