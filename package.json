@@ -8,11 +8,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "react": "16.8.6",
-    "react-native": "0.60.0",
     "axios": "^0.16.2",
     "native-base": "^2.12.1",
-    "react-native-router-flux": "^3.45.0"
+    "react": "16.8.6",
+    "react-native": "0.60.0",
+    "react-native-router-flux": "^3.45.0",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0"
   },
   "devDependencies": {
     "@babel/core": "7.5.0",

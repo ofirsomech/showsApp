@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import axios from 'axios';
 
 class Test extends Component {
   state = { shows: [] };
+
   componentWillMount() {
     axios
       .get('http://api.tvmaze.com/shows')
@@ -15,7 +18,11 @@ class Test extends Component {
   }
 
   render() {
-    return <View>{this.renderShows()}</View>;
+    return (
+      <KeyboardAwareScrollView>
+        <View>{this.renderShows()}</View>
+      </KeyboardAwareScrollView>
+    );
   }
 }
 export default Test;
