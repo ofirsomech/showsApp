@@ -12,9 +12,12 @@
     "native-base": "^2.12.1",
     "react": "16.8.6",
     "react-native": "0.60.0",
-    "react-native-router-flux": "^3.45.0",
+    "react-native-elements": "^1.0.0",
+    "react-native-grading": "^1.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
-    "react-native-ratings": "^6.3.1"
+    "react-native-ratings": "^6.3.1",
+    "react-native-router-flux": "^3.45.0",
+    "react-native-vector-icons": "^6.6.0"
   },
   "devDependencies": {
     "@babel/core": "7.5.0",

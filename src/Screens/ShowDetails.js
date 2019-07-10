@@ -13,6 +13,9 @@ import {
   Body,
   Icon
 } from 'native-base';
+import { Rating } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const styles = {
@@ -23,12 +26,6 @@ const styles = {
 };
 
 class ShowDetails extends Component {
-  // componentWillMount() {
-  //   axios
-  //     .get(`http://api.tvmaze.com/shows/${this.props.id}`)
-  //     .then(response => this.setState({ shows: response.data }));
-  // }
-
   render() {
     const show = this.props.show;
     return (
@@ -37,7 +34,7 @@ class ShowDetails extends Component {
           <Card style={{ elevation: 3 }}>
             <CardItem>
               <Left>
-                <Thumbnail source={show.image} />
+                <Thumbnail source={{ uri: show.image.medium }} />
                 <Body>
                   <Text>{show.name}</Text>
                   <Text note>{show.premiered}</Text>
@@ -51,8 +48,15 @@ class ShowDetails extends Component {
               />
             </CardItem>
             <CardItem>
-              <Icon name="heart" style={{ color: '#ED4A6A' }} />
-              <Text>{show.name}</Text>
+              <Rating
+                type="star"
+                readonly
+                startingValue={show.rating.average}
+                ratingCount={10}
+                imageSize={35}
+                showRating
+                onFinishRating={this.ratingCompleted}
+              />
             </CardItem>
           </Card>
         </View>

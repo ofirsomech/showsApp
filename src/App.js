@@ -17,28 +17,26 @@ import Router from './Routes/Router';
 
 console.disableYellowBox = true;
 
+const styles = {
+  imageSize: {
+    width: 100,
+    height: 100
+  },
+  container: {
+    paddingTop: 200
+  }
+};
+
 class App extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Header</Title>
-          </Body>
-          <Right />
-        </Header>
-
         <Router />
 
         <Footer>
           <FooterTab>
             <Button full>
-              <Text>Footer</Text>
+              <Text>Powered By - Ofir Somech</Text>
             </Button>
           </FooterTab>
         </Footer>
