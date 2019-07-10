@@ -13,8 +13,13 @@ const RouterComponnent = () => {
   return (
     <Router sceneStyle={styles.routerScene}>
       <Scene key="root">
-        <Scene initial key="shows" component={ShowsComponent} title="Shows" />
-        <Scene key="show_details" component={ShowDetails} title="Show Detail" />
+        <Scene
+          initial
+          key="shows"
+          component={ShowsComponent}
+          title="Shows App"
+        />
+        <Scene key="show_details" component={ShowDetails} title="Shows App" />
       </Scene>
     </Router>
   );

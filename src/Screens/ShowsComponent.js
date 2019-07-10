@@ -1,27 +1,16 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 import {
   Image,
   TouchableWithoutFeedback,
   FlatList,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  RefreshControl,
+  WebView
 } from 'react-native';
 import { Rating, SearchBar } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import {
-  Container,
-  Header,
-  DeckSwiper,
-  Card,
-  CardItem,
-  Thumbnail,
-  Text,
-  View,
-  Left,
-  Body,
-  Icon
-} from 'native-base';
+import { Card, CardItem, Thumbnail, Text, View, Left, Body } from 'native-base';
 import { getShows } from '../components/services/showsApi';
 
 const styles = {
@@ -30,51 +19,49 @@ const styles = {
     height: 100
   }
 };
-let dataSearch = [];
+// let dataSearch = [];
 
-class Test extends Component {
+class ShowsComponent extends Component {
   //   state = { shows: [] };
   constructor() {
     super();
-    this.state = { dataShows: [], shows: [], isLoading: false, search: '' };
-    this.arrayHolder = [];
+    this.page = 1;
+    this.state = {
+      filterdShows: [],
+      shows: [],
+      isLoading: false,
+      search: '',
+      loading: false, // user list loading
+      isRefreshing: false //for pull to refresh
+    };
   }
 
   componentDidMount() {
     this.setState({ isLoading: true });
     getShows().then(data => {
       this.setState({
-        shows: data.filter(item => item.id < 20),
+        shows: data.filter(item => item.id < 25),
         isLoading: false,
-        dataShows: data.filter(item => item.id < 20)
+        filterdShows: data.filter(item => item.id < 25)
       });
     });
-    this.arrayHolder = this.state.shows;
   }
-
-  updateSearch = search => {
-    dataSearch = [];
-    this.setState({ search });
-    console.log(search);
-
-    this.state.shows.forEach(element => {
-      if (element.name.toUpperCase().includes(search.toUpperCase()))
-        dataSearch.push(element);
-    });
-    // if (this.state.shows)
-    if (search === '') {
-      this.setState({ shows: this.state.dataShows });
-    } else {
-      this.setState({ shows: dataSearch });
-    }
-
-    console.log(search);
+  renderFooter = () => {
+    console.log('footer');
+    if (!this.state.isLoading) return null;
+    return <ActivityIndicator style={{ color: '#000' }} />;
   };
 
-  renderSeparator = () => {
-    return (
-      <View style={{ height: 1, width: '100%', backgroundColor: 'black' }} />
+  //   onRefresh = () => {
+  //     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
+  //   };
+
+  updateSearch = search => {
+    const filterdShows = this.state.shows.filter(show =>
+      show.name.toUpperCase().includes(search.toUpperCase())
     );
+
+    this.setState({ filterdShows, search });
   };
 
   renderShows = ({ item }) => {
@@ -96,14 +83,14 @@ class Test extends Component {
                 <Thumbnail source={{ uri: item.image.medium }} />
                 <Body>
                   <Text>{item.name}</Text>
-                  <Text note>{item.premiered}</Text>
+                  <Text note>Premiered: {item.premiered}</Text>
                 </Body>
               </Left>
             </CardItem>
             <CardItem cardBody>
               <TouchableWithoutFeedback
                 onPress={() => {
-                  Actions.show_details({ show: item, title: item.name });
+                  Actions.show_details({ show: item });
                 }}
               >
                 <Image
@@ -134,21 +121,41 @@ class Test extends Component {
     const { search } = this.state;
     // debugger;
     return (
-      <ScrollView>
+      <View>
         <SearchBar
           placeholder="Type Here..."
           onChangeText={text => this.updateSearch(text)}
-          onCancel={text => this.updateSearch(text)}
           value={search}
           lightTheme
         />
-        <FlatList
-          data={this.state.shows}
-          renderItem={this.renderShows}
-          keyExtractor={(item, index) => index}
-        />
-      </ScrollView>
+        <ScrollView>
+          <View>
+            <FlatList
+              style={{ paddingBottom: 65 }}
+              data={this.state.filterdShows}
+              renderItem={this.renderShows}
+              horizontal={false}
+              keyExtractor={show => show.id.toString()}
+              //   onScrollEndDrag={this.renderMoreShows}
+              onScrollBeginDrag={() => console.log('onScrollBeginDrag')}
+              onScrollEndDrag={() => console.log('onScrollEndDrag')}
+              onResponderEnd={() => console.log('response end')}
+              scrollEnabled={true}
+              refreshControl={
+                <RefreshControl
+                  enable
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={this.onRefresh}
+                  onResponderEnd={this.onRefresh}
+                />
+              }
+              ListFooterComponent={this.renderFooter}
+              pagingEnabled
+            />
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }
-export default Test;
+export default ShowsComponent;
