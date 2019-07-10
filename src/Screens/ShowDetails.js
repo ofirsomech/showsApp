@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 import {
-  Container,
-  Header,
-  DeckSwiper,
   Card,
   CardItem,
   Thumbnail,
@@ -16,8 +13,6 @@ import {
 import { Rating } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 const styles = {
   imageSize: {
     width: 100,
@@ -29,7 +24,7 @@ class ShowDetails extends Component {
   render() {
     const show = this.props.show;
     return (
-      <KeyboardAwareScrollView>
+      <ScrollView>
         <View>
           <Card style={{ elevation: 3 }}>
             <CardItem>
@@ -55,12 +50,13 @@ class ShowDetails extends Component {
                 ratingCount={10}
                 imageSize={35}
                 showRating
+                fractions={1}
                 onFinishRating={this.ratingCompleted}
               />
             </CardItem>
           </Card>
         </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
     );
   }
 }

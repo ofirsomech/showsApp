@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   ScrollView
 } from 'react-native';
-import { Rating } from 'react-native-elements';
+import { Rating, SearchBar } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {
   Container,
@@ -22,7 +22,6 @@ import {
   Body,
   Icon
 } from 'native-base';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getShows } from '../components/services/showsApi';
 
 const styles = {
@@ -31,21 +30,46 @@ const styles = {
     height: 100
   }
 };
+let dataSearch = [];
 
 class Test extends Component {
   //   state = { shows: [] };
   constructor() {
     super();
-    this.state = { shows: [], isLoading: true };
+    this.state = { dataShows: [], shows: [], isLoading: false, search: '' };
+    this.arrayHolder = [];
   }
+
   componentDidMount() {
+    this.setState({ isLoading: true });
     getShows().then(data => {
       this.setState({
         shows: data.filter(item => item.id < 20),
-        isLoading: false
+        isLoading: false,
+        dataShows: data.filter(item => item.id < 20)
       });
     });
+    this.arrayHolder = this.state.shows;
   }
+
+  updateSearch = search => {
+    dataSearch = [];
+    this.setState({ search });
+    console.log(search);
+
+    this.state.shows.forEach(element => {
+      if (element.name.toUpperCase().includes(search.toUpperCase()))
+        dataSearch.push(element);
+    });
+    // if (this.state.shows)
+    if (search === '') {
+      this.setState({ shows: this.state.dataShows });
+    } else {
+      this.setState({ shows: dataSearch });
+    }
+
+    console.log(search);
+  };
 
   renderSeparator = () => {
     return (
@@ -95,12 +119,10 @@ class Test extends Component {
                 startingValue={item.rating.average}
                 ratingCount={10}
                 imageSize={35}
+                fractions={1}
                 showRating
                 onFinishRating={this.ratingCompleted}
               />
-              {/* <Icon name="star" style={{ color: '#ED4A6A' }} />
-            <Text>{item.rating.average}/10 </Text> */}
-              {/* {this.renerStars(item)} */}
             </CardItem>
           </Card>
         </View>
@@ -109,10 +131,17 @@ class Test extends Component {
   };
 
   render() {
+    const { search } = this.state;
     // debugger;
     return (
       <ScrollView>
-        {/* <View>{this.renderShows()}</View> */}
+        <SearchBar
+          placeholder="Type Here..."
+          onChangeText={text => this.updateSearch(text)}
+          onCancel={text => this.updateSearch(text)}
+          value={search}
+          lightTheme
+        />
         <FlatList
           data={this.state.shows}
           renderItem={this.renderShows}
