@@ -1,59 +1,39 @@
 import React, { Component } from 'react';
 import { Image, ScrollView } from 'react-native';
 import HTML from 'react-native-render-html';
-import {
-  Card,
-  CardItem,
-  Thumbnail,
-  Text,
-  View,
-  Left,
-  Body,
-  Icon
-} from 'native-base';
+import { Card, CardItem, Text, View, Body } from 'native-base';
 import { Rating, Divider } from 'react-native-elements';
-import { Actions } from 'react-native-router-flux';
 
 const styles = {
-  imageSize: {
-    width: 100,
-    height: 100
-  },
   boldText: {
     fontWeight: 'bold',
     fontSize: 20
+  },
+  boldTextTitle: {
+    fontWeight: '800',
+    fontSize: 25,
+    alignSelf: 'center',
+    textDecorationLine: 'underline',
+    color: 'green'
   }
 };
 
 class ShowDetails extends Component {
-  renderGenre = show => {
-    show.genres.map(genre => <Text>{genre}</Text>);
-  };
   render() {
     const show = this.props.show;
     return (
       <ScrollView>
         <View>
           <Card style={{ elevation: 3 }}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={{ uri: show.image.medium }} />
-                <Body>
-                  <Text>{show.name}</Text>
-                  <Text note>{show.language}</Text>
-                  <Text note>{show.network.name}</Text>
-                </Body>
-              </Left>
-            </CardItem>
             <CardItem cardBody>
               <Image
                 style={{ height: 500, flex: 1 }}
-                source={{ uri: show.image.medium }}
+                source={{ uri: show.image.original }}
               />
             </CardItem>
             <CardItem>
               <Body>
-                <Text style={styles.boldText}>{show.name}</Text>
+                <Text style={styles.boldTextTitle}>{show.name}</Text>
               </Body>
             </CardItem>
             <CardItem>

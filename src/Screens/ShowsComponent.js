@@ -4,9 +4,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   ActivityIndicator,
-  ScrollView,
-  RefreshControl,
-  WebView
+  ScrollView
 } from 'react-native';
 import { Rating, SearchBar } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -19,13 +17,10 @@ const styles = {
     height: 100
   }
 };
-// let dataSearch = [];
 
 class ShowsComponent extends Component {
-  //   state = { shows: [] };
   constructor() {
     super();
-    this.page = 1;
     this.state = {
       filterdShows: [],
       shows: [],
@@ -40,9 +35,9 @@ class ShowsComponent extends Component {
     this.setState({ isLoading: true });
     getShows().then(data => {
       this.setState({
-        shows: data.filter(item => item.id < 25),
+        shows: data.filter(item => item.id <= 100),
         isLoading: false,
-        filterdShows: data.filter(item => item.id < 25)
+        filterdShows: data.filter(item => item.id <= 100)
       });
     });
   }
@@ -51,10 +46,6 @@ class ShowsComponent extends Component {
     if (!this.state.isLoading) return null;
     return <ActivityIndicator style={{ color: '#000' }} />;
   };
-
-  //   onRefresh = () => {
-  //     this.setState({ isRefreshing: true }); // true isRefreshing flag for enable pull to refresh indicator
-  //   };
 
   updateSearch = search => {
     const filterdShows = this.state.shows.filter(show =>
@@ -65,7 +56,6 @@ class ShowsComponent extends Component {
   };
 
   renderShows = ({ item }) => {
-    // return this.state.shows.map(show => (
     if (this.state.isLoading) {
       return (
         <View
@@ -95,7 +85,7 @@ class ShowsComponent extends Component {
               >
                 <Image
                   style={{ height: 300, flex: 1 }}
-                  source={{ uri: item.image.original }}
+                  source={{ uri: item.image.medium }}
                 />
               </TouchableWithoutFeedback>
             </CardItem>
@@ -119,11 +109,10 @@ class ShowsComponent extends Component {
 
   render() {
     const { search } = this.state;
-    // debugger;
     return (
       <View>
         <SearchBar
-          placeholder="Type Here..."
+          placeholder="Search"
           onChangeText={text => this.updateSearch(text)}
           value={search}
           lightTheme
@@ -131,26 +120,12 @@ class ShowsComponent extends Component {
         <ScrollView>
           <View>
             <FlatList
+              initialNumToRender={10}
               style={{ paddingBottom: 65 }}
               data={this.state.filterdShows}
               renderItem={this.renderShows}
-              horizontal={false}
               keyExtractor={show => show.id.toString()}
-              //   onScrollEndDrag={this.renderMoreShows}
-              onScrollBeginDrag={() => console.log('onScrollBeginDrag')}
-              onScrollEndDrag={() => console.log('onScrollEndDrag')}
-              onResponderEnd={() => console.log('response end')}
-              scrollEnabled={true}
-              refreshControl={
-                <RefreshControl
-                  enable
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={this.onRefresh}
-                  onResponderEnd={this.onRefresh}
-                />
-              }
               ListFooterComponent={this.renderFooter}
-              pagingEnabled
             />
           </View>
         </ScrollView>

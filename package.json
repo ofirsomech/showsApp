@@ -13,9 +13,6 @@
     "react": "16.8.6",
     "react-native": "0.60.0",
     "react-native-elements": "^1.0.0",
-    "react-native-grading": "^1.0.0",
-    "react-native-keyboard-aware-scroll-view": "^0.8.0",
-    "react-native-ratings": "^6.3.1",
     "react-native-router-flux": "^3.45.0",
     "react-native-vector-icons": "^6.6.0",
     "react-native-render-html": "^4.1.2"
